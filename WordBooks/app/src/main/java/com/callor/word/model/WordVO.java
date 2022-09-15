@@ -27,9 +27,6 @@ public class WordVO {
         this.word = word;
     }
 
-    public WordVO() {
-    }
-
     public WordVO(long seq, String word) {
         this.seq = seq;
         this.word = word;

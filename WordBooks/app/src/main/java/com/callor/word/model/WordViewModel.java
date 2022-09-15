@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.callor.word.persistence.WordRepository;
 
+import java.util.List;
+
 // WordVO : 데이터를 담고, Table 을 생성하는 용도의 클래스
 // WordViewModel : ViewModel 클래스로 데이터를 Observe 방시긍로 핸들링하기 위한 도구
 public class WordViewModel extends ViewModel {
@@ -18,7 +20,7 @@ public class WordViewModel extends ViewModel {
         wordRepository = new WordRepository(application);
     }
 
-    public LiveData<WordVO> selectAll() {
+    public LiveData<List<WordVO>> selectAll() {
         return wordRepository.wordList();
     }
 

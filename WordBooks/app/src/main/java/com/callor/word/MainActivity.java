@@ -1,6 +1,7 @@
 package com.callor.word;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.callor.word.model.WordVIewModelFactory;
 import com.callor.word.model.WordVO;
 import com.callor.word.model.WordViewModel;
+
+import java.util.Random;
 
 /*
 Activity
@@ -36,14 +39,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = new ViewModelProvider(this, new WordVIewModelFactory()).get(WordViewModel.class);
-
-        // viewModel Observer 를 등록하여 DB 데이터를 감시하도록 설정
-        // 데이터를 추가를 감시하는 부분
-        Observer<WordVO> wordObserver = (Observer<WordVO>) new WordVO(0, "Korea");
-
-        // 추가된 데이터를 읽어서 View 하는 부분
-        viewModel.getWord().observe(this, wordObserver);
+        /*
+        ViewModel 활용하여 tbl_words 데이터베이스로부터 SELECT ALL 수행
+         */
+        viewModel = new ViewModelProvider.AndroidViewModelFactory(this.getApplication()).create(WordViewModel.class);
+        viewModel.selectAll().observe(this, wordList -> {
+            for(WordVO word : wordList) {
+                Log.d("MAIN", word.getWord());
+            }
+        });
 
         // activity_main.xml 에 설정된 btn_size 위젯을 사용하기 위한
         // 객체로 설정
@@ -59,7 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(view.getContext(),
                         "Button Click",
                         Toast.LENGTH_SHORT).show();
+                String word = String.format("Korea %d", Math.floor(Math.random()*100), 0);
 
+                WordVO wordVO = new WordVO(1, word);
+                viewModel.insert(wordVO);
 
                 // ImageView 객체 선언
                 ImageView imageView = findViewById(R.id.image);

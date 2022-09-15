@@ -8,11 +8,13 @@ import androidx.room.Query;
 
 import com.callor.word.model.WordVO;
 
+import java.util.List;
+
 @Dao
 public interface WordDao {
 
     @Query("SELECT * FROM tbl_words")
-    public LiveData<WordVO> selectAll();
+    public LiveData<List<WordVO>> selectAll();
 
 
     /*
@@ -25,8 +27,7 @@ public interface WordDao {
     OnConflictStrategy.ROLLBACK : 되돌리기
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public Runnable insert(WordVO wordVO);
-
+    Runnable insert(WordVO wordVO);
 
 
 }
